@@ -1,0 +1,311 @@
+{
+    "info": {
+        "_postman_id": "b5da8f8a-9b1b-4c5d-8e9f-1a2b3c4d5e6f",
+        "name": "Wallet Service API",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Health Check",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{base_url}}/health",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "health"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Create Wallet",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json",
+                        "type": "text"
+                    },
+                    {
+                        "key": "Accept",
+                        "value": "application/json",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"owner_name\": \"John Doe\",\n    \"currency\": \"USD\"\n}"
+                },
+                "url": {
+                    "raw": "{{base_url}}/wallets",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "wallets"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "List Wallets",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Accept",
+                        "value": "application/json",
+                        "type": "text"
+                    }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/wallets?owner_name=John&currency=USD",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "wallets"
+                    ],
+                    "query": [
+                        {
+                            "key": "owner_name",
+                            "value": "John",
+                            "description": "Optional filter"
+                        },
+                        {
+                            "key": "currency",
+                            "value": "USD",
+                            "description": "Optional filter"
+                        }
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Get Wallet",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Accept",
+                        "value": "application/json",
+                        "type": "text"
+                    }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/wallets/{{wallet_id}}",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "wallets",
+                        "{{wallet_id}}"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Get Wallet Balance",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Accept",
+                        "value": "application/json",
+                        "type": "text"
+                    }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/wallets/{{wallet_id}}/balance",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "wallets",
+                        "{{wallet_id}}",
+                        "balance"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Get Wallet Transactions",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Accept",
+                        "value": "application/json",
+                        "type": "text"
+                    }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/wallets/{{wallet_id}}/transactions?type=deposit&date_from=2024-01-01&date_to=2024-12-31",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "wallets",
+                        "{{wallet_id}}",
+                        "transactions"
+                    ],
+                    "query": [
+                        {
+                            "key": "type",
+                            "value": "deposit",
+                            "description": "Optional: deposit, withdraw, transfer"
+                        },
+                        {
+                            "key": "date_from",
+                            "value": "2024-01-01",
+                            "description": "Optional: YYYY-MM-DD"
+                        },
+                        {
+                            "key": "date_to",
+                            "value": "2024-12-31",
+                            "description": "Optional: YYYY-MM-DD"
+                        }
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Deposit",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json",
+                        "type": "text"
+                    },
+                    {
+                        "key": "Accept",
+                        "value": "application/json",
+                        "type": "text"
+                    },
+                    {
+                        "key": "Idempotency-Key",
+                        "value": "{{$guid}}",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"amount\": 100\n}"
+                },
+                "url": {
+                    "raw": "{{base_url}}/wallets/{{wallet_id}}/deposit",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "wallets",
+                        "{{wallet_id}}",
+                        "deposit"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Withdraw",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json",
+                        "type": "text"
+                    },
+                    {
+                        "key": "Accept",
+                        "value": "application/json",
+                        "type": "text"
+                    },
+                    {
+                        "key": "Idempotency-Key",
+                        "value": "{{$guid}}",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"amount\": 50\n}"
+                },
+                "url": {
+                    "raw": "{{base_url}}/wallets/{{wallet_id}}/withdraw",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "wallets",
+                        "{{wallet_id}}",
+                        "withdraw"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Transfer",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json",
+                        "type": "text"
+                    },
+                    {
+                        "key": "Accept",
+                        "value": "application/json",
+                        "type": "text"
+                    },
+                    {
+                        "key": "Idempotency-Key",
+                        "value": "{{$guid}}",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"source_wallet_id\": \"{{wallet_id}}\",\n    \"target_wallet_id\": \"TARGET_WALLET_ID_HERE\",\n    \"amount\": 25\n}"
+                },
+                "url": {
+                    "raw": "{{base_url}}/transfers",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "transfers"
+                    ]
+                }
+            },
+            "response": []
+        }
+    ],
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "http://localhost:8025/api",
+            "type": "string"
+        },
+        {
+            "key": "wallet_id",
+            "value": "",
+            "type": "string"
+        }
+    ]
+}

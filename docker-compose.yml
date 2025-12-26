@@ -1,0 +1,55 @@
+version: "3.8"
+services:
+  wallet:
+    build:
+      args:
+        user: docker
+        uid: 1002
+      context: .
+      dockerfile: DockerFile
+    image: wallet
+    container_name: wallet-app
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./:/var/www
+    networks:
+      - wallet
+
+  wallet-db:
+    image: mysql
+    container_name: wallet-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - 3306:3306
+    volumes:
+      - mysqldata:/var/lib/mysql
+    networks:
+      - wallet
+
+  wallet-nginx:
+    image: nginx:alpine
+    container_name: wallet-nginx
+    restart: unless-stopped
+    ports:
+      - 8025:80
+    environment:
+      - REVERB_SERVER_HOST=0.0.0.0
+      - REVERB_SERVER_PORT=8080
+    volumes:
+      - ./:/var/www
+      - ./nginx:/etc/nginx/conf.d/
+    networks:
+      - wallet
+
+networks:
+  wallet:
+    name: wallet
+    driver: bridge
+
+volumes:
+  mysqldata:
