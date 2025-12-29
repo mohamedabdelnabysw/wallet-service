@@ -13,8 +13,10 @@ Route::prefix('wallets')->group(function () {
     Route::get('/{id}/balance', [WalletController::class, 'balance']);
     Route::get('/{id}/transactions', [WalletController::class, 'transactions']);
 
-    Route::post('/{id}/deposit', [WalletController::class, 'deposit']);
-    Route::post('/{id}/withdraw', [WalletController::class, 'withdraw']);
+    Route::middleware('idempotent')->group(function () {
+        Route::post('/{id}/deposit', [WalletController::class, 'deposit']);
+        Route::post('/{id}/withdraw', [WalletController::class, 'withdraw']);
+    });
 });
 
-Route::post('/transfers', [TransferController::class, 'store']);
+Route::post('/transfers', [TransferController::class, 'store'])->middleware('idempotent');
